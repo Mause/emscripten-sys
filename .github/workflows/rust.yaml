@@ -7,9 +7,13 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        emsdk_version: [2.0.15, 2.0.15]
+
     runs-on: ubuntu-latest
     container:
-      image: emscripten/emsdk:2.0.16
+      image: emscripten/emsdk:${{ matrix.emsdk_version }}
 
     steps:
     - uses: actions/checkout@v2
