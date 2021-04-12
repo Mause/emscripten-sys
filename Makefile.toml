@@ -4,7 +4,7 @@ EMMAKEN_CFLAGS = "-s ERROR_ON_UNDEFINED_SYMBOLS=0 -sEXTRA_EXPORTED_RUNTIME_METHO
 [tasks.build]
 clear = true
 command = "cargo"
-args = ["web", "build"]
+args = ["web", "build", "--use-system-emscripten"]
 
 [tasks.test]
 clear = true
