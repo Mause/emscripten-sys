@@ -1,0 +1,13 @@
+[env]
+EMMAKEN_CFLAGS = "-s ERROR_ON_UNDEFINED_SYMBOLS=0 -sEXTRA_EXPORTED_RUNTIME_METHODS=[ccall,cwrap] -s ASSERTIONS=1 -s SAFE_HEAP=1 -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$readAsmConstArgs"
+
+[tasks.build]
+clear = true
+command = "cargo"
+args = ["web", "build"]
+
+[tasks.test]
+clear = true
+dependencies = ['build']
+command = "cargo"
+args = ["web", "test", "--nodejs", "--use-system-emscripten", "--", "--nocapture"]

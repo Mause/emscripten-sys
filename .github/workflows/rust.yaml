@@ -1,0 +1,51 @@
+name: Rust
+
+on: push
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: emscripten/emsdk:2.0.16
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install latest nightly
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly-2021-03-25
+        override: true
+        components: rustfmt, clippy
+        target: wasm32-unknown-emscripten
+    - name: Cache .cargo
+      id: cache-primes
+      uses: actions/cache@v2
+      with:
+        path: ~/.cargo
+        key: ${{ runner.os }}-${{ hashFiles('Cargo**') }}
+    - name: Install cargo web
+      uses: actions-rs/cargo@v1
+      with:
+        command: install
+        args: cargo-web
+        use-tool-cache: true
+    - name: Install deps
+      run: |
+        sudo apt update
+        sudo apt-get install pkg-config build-essential libssl-dev libclang1 libclang-dev gcc-multilib wabt --yes
+    - uses: davidB/rust-cargo-make@v1
+      with:
+        version: 0.32.16
+    - name: Run CI
+      uses: actions-rs/cargo@v1
+      with:
+        command: make
+    - uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: emscripten_logs
+        path: /tmp/emscripten_temp
+    - run: wasm-objdump --details --headers --reloc --debug --section=data --full-contents target/wasm32-unknown-emscripten/debug/deps/bin-*.wasm
