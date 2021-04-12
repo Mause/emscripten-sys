@@ -20,8 +20,7 @@ jobs:
         override: true
         components: rustfmt, clippy
         target: wasm32-unknown-emscripten
-    - name: Install cargo web
-      uses: actions-rs/install@v1
+    - uses: actions-rs/install@v0.1
       with:
         crate: cargo-web
         use-tool-cache: true
