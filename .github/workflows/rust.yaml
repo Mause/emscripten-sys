@@ -40,4 +40,5 @@ jobs:
       with:
         name: emscripten_logs
         path: /tmp/emscripten_temp
-    - run: wasm-objdump --details --headers --reloc --debug --section=data --full-contents target/wasm32-unknown-emscripten/debug/deps/bin-*.wasm
+    - run: wasm-objdump --details --headers --reloc --debug --section=data --full-contents target/wasm32-unknown-emscripten/debug/deps/*.wasm
+      if: failure()
