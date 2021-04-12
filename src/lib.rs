@@ -8,6 +8,7 @@ extern "C" {
 
 #[test]
 fn it_works() {
+    #[link_section = ".data,em_asm"]
     static SNIPPET: [u8; 25] = *b"{ console.log(\"hello\") }\x00";
     const EMPTY_SIG: &'static [u8] = b"\x00";
 
