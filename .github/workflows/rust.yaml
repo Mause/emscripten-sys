@@ -20,22 +20,15 @@ jobs:
         override: true
         components: rustfmt, clippy
         target: wasm32-unknown-emscripten
-    - name: Cache .cargo
-      id: cache-primes
-      uses: actions/cache@v2
-      with:
-        path: ~/.cargo
-        key: ${{ runner.os }}-${{ hashFiles('Cargo**') }}
     - name: Install cargo web
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/install@v1
       with:
-        command: install
-        args: cargo-web
+        crate: cargo-web
         use-tool-cache: true
     - name: Install deps
       run: |
         sudo apt update
-        sudo apt-get install pkg-config build-essential libssl-dev libclang1 libclang-dev gcc-multilib wabt --yes
+        sudo apt-get install wabt --yes
     - uses: davidB/rust-cargo-make@v1
       with:
         version: 0.32.16
