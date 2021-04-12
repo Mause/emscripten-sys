@@ -8,13 +8,13 @@ extern "C" {
 
 #[test]
 fn it_works() {
-    const SNIPPET: &'static [u8] = b"{ console.log(\"hello\") }\x00";
-    let empty_sig = unsafe { std::ffi::CString::from_vec_unchecked(vec![]) };
+    static SNIPPET: [u8; 25] = *b"{ console.log(\"hello\") }\x00";
+    const EMPTY_SIG: &'static [u8] = b"\x00";
 
     unsafe {
         emscripten_asm_const_int(
-            SNIPPET as *const _ as *const u8,
-            empty_sig.as_ptr() as *const u8,
+            SNIPPET.as_ptr() as *const _ as *const u8,
+            EMPTY_SIG.as_ptr() as *const u8,
             std::ptr::null() as *const u8,
         )
     };
